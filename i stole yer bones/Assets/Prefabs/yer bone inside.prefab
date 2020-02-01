@@ -120,4 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e2f6e22bdd68cf458861430f4b707b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasBone: 0
+  pref_outsideBone: {fileID: 4564490274659628259, guid: aeae5915d1c5d0b4ba050159aff94e3e,
+    type: 3}
+  hasBone: 1

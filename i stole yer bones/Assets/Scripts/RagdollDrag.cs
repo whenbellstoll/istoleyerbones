@@ -26,21 +26,9 @@ public class RagdollDrag : MonoBehaviour
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!Input.GetButton("Fire1")) isHeld = false;
 
-        if (isHeld)
+        if (isHeld && CheckForBone())
         {
             rb.AddForce(mousePosition - transform.position, ForceMode2D.Impulse);
-        }
-        else if (CheckForBone())
-        {
-            Debug.Log("aaaaaaa");
-            rb.bodyType = RigidbodyType2D.Static;
-        }
-        else if (rb.bodyType != RigidbodyType2D.Dynamic)
-        {
-            rb.bodyType = RigidbodyType2D.Dynamic;
-
-            //oh gee howdy do I love throwin' bones with some M A G I C N U M B E R S
-            //rb.AddForce((mouse.transform.position - previousMousePosition) * 25.0f, ForceMode2D.Impulse);
         }
 
         //previousMousePosition = mousePosition;

@@ -9,7 +9,8 @@ public class MoveableObject : MonoBehaviour
     new Collider2D collider;
 
     Rigidbody2D rb = null;
-    bool isHeld = false; //is the mouse holding this objct?
+    public bool isHeld = false; //is the mouse holding this objct?
+    public bool collisionEventsEnabled = true;
 
     Vector3 previousMousePosition;
 
@@ -67,9 +68,9 @@ public class MoveableObject : MonoBehaviour
         {
             if (!isHeld)
             {
-                isHeld = true;
                 transform.parent = mouse.transform;
                 collider.isTrigger = true;
+                isHeld = true;
             }
         }
     }
