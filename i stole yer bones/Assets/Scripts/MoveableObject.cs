@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MoveableObject : MonoBehaviour
 {
-    [SerializeField] GameObject mouse;
+    GameObject mouse;
+
+    Collider2D collider;
 
     Rigidbody2D rb = null;
     bool isHeld = false; //is the mouse holding this objct?
@@ -14,7 +16,10 @@ public class MoveableObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mouse = GameObject.Find("mouse");
         rb = GetComponent<Rigidbody2D>();
+        if (GetComponent<BoxCollider2D>()) collider = GetComponent<BoxCollider2D>();
+        else if (GetComponent<CapsuleCollider2D>()) collider = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -24,7 +29,13 @@ public class MoveableObject : MonoBehaviour
         if (!isHeld)
         {
             mouse.transform.eulerAngles = Vector3.zero;
-            transform.parent = null;
+            if (transform.parent != null && transform.parent.tag != "insideBone") transform.parent = null;
+            collider.isTrigger = true;
+        }
+
+        if(!isHeld && collider.isTrigger)
+        {
+            collider.isTrigger = false;
         }
 
 
@@ -33,7 +44,7 @@ public class MoveableObject : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Kinematic;
             mouse.transform.eulerAngles = new Vector3 (0, 0, EasingFunction.EaseInElastic( mouse.transform.eulerAngles.z, 90.01f, 0.39f ) );
         }
-        else if(rb.bodyType != RigidbodyType2D.Dynamic)
+        else if(rb.bodyType != RigidbodyType2D.Dynamic && transform.parent != null && transform.parent.gameObject.tag != "insideBone")
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
 
@@ -42,6 +53,8 @@ public class MoveableObject : MonoBehaviour
         }
 
         previousMousePosition = mouse.transform.position;
+
+        Debug.Log(transform.parent);
     }
 
 
@@ -53,6 +66,7 @@ public class MoveableObject : MonoBehaviour
             {
                 isHeld = true;
                 transform.parent = mouse.transform;
+                collider.isTrigger = true;
             }
         }
     }
