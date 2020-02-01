@@ -5,6 +5,8 @@ using UnityEngine;
 public class MoveableObject : MonoBehaviour
 {
     Rigidbody2D rb = null;
+    bool isHeld = false; //is the mouse holding this objct?
+    Vector3 mouseDisplacement; //how far from the center of the object the mouse is holding it
 
     // Start is called before the first frame update
     void Start()
@@ -15,7 +17,15 @@ public class MoveableObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (isHeld)
+        {
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - mouseDisplacement;
+        }
+        else if(rb.bodyType != RigidbodyType2D.Dynamic)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
     }
 
 
@@ -23,12 +33,15 @@ public class MoveableObject : MonoBehaviour
     {
         if (Input.GetButton("Fire1"))
         {
-            rb.bodyType = RigidbodyType2D.Kinematic;
-            rb.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (!isHeld)
+            {
+                isHeld = true;
+                mouseDisplacement = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            }
         }
-        else if(rb.bodyType != RigidbodyType2D.Dynamic)
+        else
         {
-            rb.bodyType = RigidbodyType2D.Dynamic;
+            isHeld = false;
         }
     }
 }
