@@ -6,6 +6,7 @@ public class RagdollDrag : MonoBehaviour
 {
     Rigidbody2D rb = null;
     bool isHeld = false; //is the mouse holding this objct?
+    [SerializeField] bool needsBone = true;
 
     insideBone bone;
 
@@ -26,7 +27,7 @@ public class RagdollDrag : MonoBehaviour
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (!Input.GetButton("Fire1")) isHeld = false;
 
-        if (isHeld && CheckForBone())
+        if (isHeld && (CheckForBone() || !needsBone))
         {
             rb.AddForce(mousePosition - transform.position, ForceMode2D.Impulse);
         }
