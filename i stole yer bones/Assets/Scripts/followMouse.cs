@@ -14,5 +14,9 @@ public class followMouse : MonoBehaviour
     void Update()
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+
+        //Putting this in followMouse because this script looks lonely. Fight me, Kent.
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
     }
 }

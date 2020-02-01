@@ -6,7 +6,7 @@ public class MoveableObject : MonoBehaviour
 {
     GameObject mouse;
 
-    Collider2D collider;
+    new Collider2D collider;
 
     Rigidbody2D rb = null;
     bool isHeld = false; //is the mouse holding this objct?

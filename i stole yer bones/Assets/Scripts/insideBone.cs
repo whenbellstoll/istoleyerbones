@@ -22,12 +22,10 @@ public class insideBone : MonoBehaviour
     {
         if (!Input.GetButton("Fire1"))
         {
-            if(collision.gameObject.tag == "outsideBone" && collision.gameObject.transform.parent == null)
+            if(!hasBone && collision.gameObject.tag == "outsideBone" && collision.gameObject.transform.parent == null)
             {
-                collision.gameObject.transform.parent = gameObject.transform;
-                collision.gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-                collision.gameObject.transform.position = gameObject.transform.position;
-                collision.gameObject.transform.rotation = gameObject.transform.rotation;
+                Destroy(collision.gameObject);
+                GetComponent<SpriteRenderer>().color = Color.white;
                 hasBone = true;
             }
         }

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class RagdollDrag : MonoBehaviour
 {
-    GameObject mouse;
     Rigidbody2D rb = null;
     bool isHeld = false; //is the mouse holding this objct?
+
+    insideBone bone;
 
     Vector3 mousePosition;
     //Vector3 previousMousePosition;
@@ -15,8 +16,8 @@ public class RagdollDrag : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mouse = GameObject.Find("mouse");
         rb = GetComponent<Rigidbody2D>();
+        bone = GetComponentInChildren<insideBone>();
     }
 
     // Update is called once per frame
@@ -29,18 +30,17 @@ public class RagdollDrag : MonoBehaviour
         {
             rb.AddForce(mousePosition - transform.position, ForceMode2D.Impulse);
         }
+        else if (CheckForBone())
+        {
+            Debug.Log("aaaaaaa");
+            rb.bodyType = RigidbodyType2D.Static;
+        }
         else if (rb.bodyType != RigidbodyType2D.Dynamic)
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
 
             //oh gee howdy do I love throwin' bones with some M A G I C N U M B E R S
             //rb.AddForce((mouse.transform.position - previousMousePosition) * 25.0f, ForceMode2D.Impulse);
-        }
-
-        if(mouse.transform.childCount > 0)
-        {
-            //FEED ME
-            rb.AddForce((mouse.transform.GetChild(0).transform.position - transform.position) * 0.1f, ForceMode2D.Impulse) ;
         }
 
         //previousMousePosition = mousePosition;
@@ -56,5 +56,10 @@ public class RagdollDrag : MonoBehaviour
                 //mouseDisplacement = mouseDisplacement - transform.position;
             }
         }
+    }
+
+    private bool CheckForBone()
+    {
+        return bone != null && bone.hasBone;
     }
 }
