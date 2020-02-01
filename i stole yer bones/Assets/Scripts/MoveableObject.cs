@@ -29,7 +29,7 @@ public class MoveableObject : MonoBehaviour
         if (!isHeld)
         {
             mouse.transform.eulerAngles = Vector3.zero;
-            if (transform.parent != null && transform.parent.tag != "insideBone") transform.parent = null;
+            if (!ParentIsInsideBone()) transform.parent = null;
             collider.isTrigger = true;
         }
 
@@ -44,7 +44,7 @@ public class MoveableObject : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Kinematic;
             mouse.transform.eulerAngles = new Vector3 (0, 0, EasingFunction.EaseInElastic( mouse.transform.eulerAngles.z, 90.01f, 0.39f ) );
         }
-        else if(rb.bodyType != RigidbodyType2D.Dynamic && transform.parent != null && transform.parent.gameObject.tag != "insideBone")
+        else if(rb.bodyType != RigidbodyType2D.Dynamic && !ParentIsInsideBone())
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
 
@@ -54,13 +54,16 @@ public class MoveableObject : MonoBehaviour
 
         previousMousePosition = mouse.transform.position;
 
-        Debug.Log(transform.parent);
+        if (ParentIsInsideBone())
+        {
+            collider.isTrigger = true;
+        }
     }
 
 
     private void OnMouseOver()
     {
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && !ParentIsInsideBone())
         {
             if (!isHeld)
             {
@@ -69,5 +72,10 @@ public class MoveableObject : MonoBehaviour
                 collider.isTrigger = true;
             }
         }
+    }
+
+    bool ParentIsInsideBone()
+    {
+        return transform.parent != null && transform.parent.gameObject.tag == "insideBone";
     }
 }

@@ -24,8 +24,6 @@ public class insideBone : MonoBehaviour
         {
             if(collision.gameObject.tag == "outsideBone" && collision.gameObject.transform.parent == null)
             {
-                Debug.Log("we got here");
-                collision.gameObject.GetComponent<Collider2D>().isTrigger = true;
                 collision.gameObject.transform.parent = gameObject.transform;
                 collision.gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
                 collision.gameObject.transform.position = gameObject.transform.position;
