@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class MoveableObject : MonoBehaviour
 {
+    [SerializeField] GameObject mouse;
+
     Rigidbody2D rb = null;
     bool isHeld = false; //is the mouse holding this objct?
 
-    Vector3 mouse;
     Vector3 previousMousePosition;
-    Vector3 mouseDisplacement; //how far from the center of the object the mouse is holding it
 
     // Start is called before the first frame update
     void Start()
@@ -20,22 +20,28 @@ public class MoveableObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (!Input.GetButton("Fire1")) isHeld = false;
+        if (!isHeld)
+        {
+            mouse.transform.eulerAngles = Vector3.zero;
+            transform.parent = null;
+        }
+
+
         if (isHeld)
         {
             rb.bodyType = RigidbodyType2D.Kinematic;
-            transform.position = mouse - mouseDisplacement;
-
+            mouse.transform.eulerAngles = new Vector3 (0, 0, EasingFunction.EaseInElastic( mouse.transform.eulerAngles.z, 90.01f, 0.39f ) );
         }
         else if(rb.bodyType != RigidbodyType2D.Dynamic)
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
 
             //oh gee howdy do I love throwin' bones with some M A G I C N U M B E R S
-            rb.AddForce((mouse - previousMousePosition) * 25.0f, ForceMode2D.Impulse) ;
+            rb.AddForce((mouse.transform.position - previousMousePosition) * 25.0f, ForceMode2D.Impulse) ;
         }
 
-        previousMousePosition = mouse;
+        previousMousePosition = mouse.transform.position;
     }
 
 
@@ -46,12 +52,8 @@ public class MoveableObject : MonoBehaviour
             if (!isHeld)
             {
                 isHeld = true;
-                mouseDisplacement = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+                transform.parent = mouse.transform;
             }
-        }
-        else if(isHeld)
-        {
-            isHeld = false;
         }
     }
 }
