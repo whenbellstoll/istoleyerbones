@@ -8,6 +8,9 @@ public class RagdollDrag : MonoBehaviour
     bool isHeld = false; //is the mouse holding this objct?
     [SerializeField] bool needsBone = true;
 
+    public bool sticking = false;
+
+
     insideBone bone;
 
     Vector3 mousePosition;
@@ -50,5 +53,16 @@ public class RagdollDrag : MonoBehaviour
     private bool CheckForBone()
     {
         return bone != null && bone.hasBone;
+    }
+
+    public void StickTo(Transform t)
+    {
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.position = t.position + new Vector3(0, (GetComponent<CapsuleCollider2D>().size.y / 2), 0);
+    }
+
+    void Destick()
+    {
+
     }
 }

@@ -5,12 +5,15 @@ using UnityEngine;
 public class MoveableObject : MonoBehaviour
 {
     GameObject mouse;
+    [SerializeField] insideBone bone;
 
     new Collider2D collider;
 
     Rigidbody2D rb = null;
     public bool isHeld = false; //is the mouse holding this objct?
     public bool collisionEventsEnabled = true;
+
+    Vector3 scaleNormal;
 
     Vector3 previousMousePosition;
 
@@ -21,6 +24,7 @@ public class MoveableObject : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         if (GetComponent<BoxCollider2D>()) collider = GetComponent<BoxCollider2D>();
         else if (GetComponent<CapsuleCollider2D>()) collider = GetComponent<CapsuleCollider2D>();
+        scaleNormal = transform.localScale;
     }
 
     // Update is called once per frame
@@ -43,14 +47,16 @@ public class MoveableObject : MonoBehaviour
         if (isHeld)
         {
             rb.bodyType = RigidbodyType2D.Kinematic;
+            transform.localScale = scaleNormal * 1.25f;
             mouse.transform.eulerAngles = new Vector3 (0, 0, EasingFunction.EaseInElastic( mouse.transform.eulerAngles.z, 90.01f, 0.39f ) );
         }
         else if(rb.bodyType != RigidbodyType2D.Dynamic && !ParentIsInsideBone())
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
+            transform.localScale = scaleNormal;
 
             //oh gee howdy do I love throwin' bones with some M A G I C N U M B E R S
-            rb.AddForce((mouse.transform.position - previousMousePosition) * 25.0f, ForceMode2D.Impulse) ;
+            rb.AddForce((mouse.transform.position - previousMousePosition) * 50.0f, ForceMode2D.Impulse) ;
         }
 
         previousMousePosition = mouse.transform.position;
