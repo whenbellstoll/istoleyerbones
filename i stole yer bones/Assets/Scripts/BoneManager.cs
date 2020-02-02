@@ -66,7 +66,7 @@ public class BoneManager : MonoBehaviour
         int explosionChance;
         while (true)
         {
-            explosionChance = Random.Range(0, 10);
+            explosionChance = Random.Range(0, 7);
             if(explosionChance == 0 && GetNumMissingBones() != 8)
             {
                 Debug.Log("boom");
@@ -77,7 +77,7 @@ public class BoneManager : MonoBehaviour
                 } while (!insideBones[whoIsTheLuckyBone].hasBone);
                 insideBones[whoIsTheLuckyBone].Explode();
             }
-            yield return new WaitForSecondsRealtime(1.0f);
+            yield return new WaitForSecondsRealtime(0.5f);
         }
     }
 

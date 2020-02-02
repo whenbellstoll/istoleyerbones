@@ -30,19 +30,23 @@ public class button : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag != "outsideBone" && collision.gameObject.tag != "head")
+        if (collision.gameObject.tag == "ragdoll")
         {
-            pressed = true;
-            if (collision.gameObject.transform.position != snapPos.position)
+            Debug.Log(collision.gameObject);
+            if (collision.GetComponentInChildren<insideBone>().hasBone)
             {
-                if (collision.gameObject.GetComponent<RagdollDrag>()) collision.gameObject.GetComponent<RagdollDrag>().StickTo(snapPos);
-            }
-            
+                pressed = true;
+                if (collision.gameObject.transform.position != snapPos.position)
+                {
+                    if (collision.gameObject.GetComponent<RagdollDrag>()) collision.gameObject.GetComponent<RagdollDrag>().StickTo(snapPos);
+                }
 
-            Vector2 size = fill.size;
-            size.y += 0.1f;
-            if (size.y < 4.5f) size.y = 4.5f;
-            fill.size = size;
+
+                Vector2 size = fill.size;
+                size.y += 0.1f;
+                if (size.y < 4.5f) size.y = 4.5f;
+                fill.size = size;
+            }
         }
     }
 }
