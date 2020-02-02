@@ -49,6 +49,12 @@ public class insideBone : MonoBehaviour
                 break;
         }
         newBone.GetComponent<Rigidbody2D>().AddForce(explosionForce, ForceMode2D.Impulse);
+        Collider2D[] effeced = Physics2D.OverlapCircleAll(transform.position, 1.0f);
+        foreach (Collider2D c in effeced)
+        {
+            Rigidbody2D r = c.gameObject.GetComponent<Rigidbody2D>();
+            if (r) r.AddForce((Vector2)transform.position - r.position, ForceMode2D.Impulse);
+        }
         yield return new WaitForSeconds(1.0f);
         newBone.GetComponent<MoveableObject>().collisionEventsEnabled = true;
         yield return null;

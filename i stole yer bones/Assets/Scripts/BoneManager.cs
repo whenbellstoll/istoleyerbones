@@ -7,9 +7,12 @@ public class BoneManager : MonoBehaviour
 {
     [SerializeField] List<insideBone> insideBones = new List<insideBone>();
     [SerializeField] Slider healthbar;
+    [SerializeField] Text scoreText;
+    [SerializeField] List<button> buttons = new List<button>();
     Vector3 healthBarOrigin;
     
     public float health = 1.0f;
+    int score = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +36,8 @@ public class BoneManager : MonoBehaviour
             StartCoroutine(Shake(healthbar.transform));
         }
         healthbar.value = health;
+
+        AddScores();
     }
 
     int GetNumMissingBones()
@@ -45,14 +50,26 @@ public class BoneManager : MonoBehaviour
         return missing;
     }
 
+    void AddScores()
+    {
+        int buttonsPressed = 0;
+        foreach (button b in buttons)
+        {
+            if (b.pressed) buttonsPressed++;
+        }
+        score += buttonsPressed;
+        scoreText.text = "Score: " + score;
+    }
+
     IEnumerator ExplosionManager()
     {
         int explosionChance;
         while (true)
         {
             explosionChance = Random.Range(0, 10);
-            if(explosionChance == 0)
+            if(explosionChance == 0 && GetNumMissingBones() != 8)
             {
+                Debug.Log("boom");
                 int whoIsTheLuckyBone;
                 do
                 {
@@ -60,7 +77,7 @@ public class BoneManager : MonoBehaviour
                 } while (!insideBones[whoIsTheLuckyBone].hasBone);
                 insideBones[whoIsTheLuckyBone].Explode();
             }
-            yield return new WaitForSecondsRealtime(1.5f);
+            yield return new WaitForSecondsRealtime(1.0f);
         }
     }
 

@@ -35,6 +35,12 @@ public class RagdollDrag : MonoBehaviour
             rb.AddForce(mousePosition - transform.position, ForceMode2D.Impulse);
         }
 
+
+        if (!CheckForBone() && rb.bodyType != RigidbodyType2D.Dynamic)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
+
         //previousMousePosition = mousePosition;
     }
 
@@ -57,12 +63,13 @@ public class RagdollDrag : MonoBehaviour
 
     public void StickTo(Transform t)
     {
+        rb.velocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
-        rb.position = t.position + new Vector3(0, (GetComponent<CapsuleCollider2D>().size.y / 2), 0);
+        rb.position = t.position;
     }
 
     void Destick()
     {
-
+        rb.bodyType = RigidbodyType2D.Dynamic;
     }
 }
