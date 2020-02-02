@@ -6,6 +6,7 @@ TagManager:
   tags:
   - insideBone
   - outsideBone
+  - button
   layers:
   - Default
   - TransparentFX
