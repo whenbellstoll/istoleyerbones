@@ -310,4 +310,5 @@ Assets\Scripts\followMouse.cs
 Assets\Scripts\insideBone.cs
 Assets\Scripts\MoveableObject.cs
 Assets\Scripts\OutsideBone.cs
+Assets\Scripts\PupilFollow.cs
 Assets\Scripts\RagdollDrag.cs
